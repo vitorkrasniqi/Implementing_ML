@@ -93,6 +93,17 @@ Q: How can you asses the quality of a python package on PyPI?
 
 A: We can check the GitHub statistics, where we see the stars, forks and open issues. Good indicator of quality is the stars statistics - the more stars the package has, the better it is.
 
+## Splitting The Code 
+Main idea for our code split: one file is only to load all the data and packages.
+
+Second step is to prepare our data : here we do data processing, flatten the data, normalize (we did this at once, because this is the stepped required to develop the model).
+
+Step 3 is just developing the model! Without running it.
+
+Then one module to compile and save, because with big data this can be time consuimg (I Guess).
+
+The last part ist to load data, fit the model and evaluate things!
+
 ## Pip Requirements File
 To prepare the pip requirements file, we first setup a virtual environment where we install all packages needed to run the code (I did it based on our documentation file). We then use the pip freeze command to create a text file with the package requirements to run the code, like this:
 ```sh
