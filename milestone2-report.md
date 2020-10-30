@@ -93,6 +93,18 @@ Q: How can you asses the quality of a python package on PyPI?
 
 A: We can check the GitHub statistics, where we see the stars, forks and open issues. Good indicator of quality is the stars statistics - the more stars the package has, the better it is.
 
+## Pip Requirements File
+To prepare the pip requirements file, we first setup a virtual environment where we install all packages needed to run the code (I did it based on our documentation file). We then use the pip freeze command to create a text file with the package requirements to run the code, like this:
+```sh
+virtualenv milestone_2
+source milestone_2/bin/activate
+pip install --upgrade setuptools
+pip install tensorflow
+pip install keras
+pip freeze > requirements.txt
+```
+Now we have a pip requirements file. I use the command `deactivate` to deactivate the virtual environment and that's it!
+
 ## Dockerize The Code
 To install Docker, we use the following commands:
 ```sh
