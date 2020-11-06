@@ -74,7 +74,7 @@ A:
 
 Q: How would you explain a Docker container and volume to a child?
 
-A: For this question, we really can't think of anything more accurate than the example Arthur presented at the lecture.
+A: For this question, we really can't think of anything more accurate than the example Arthur presented at the lecture. The example presented was that a Docker container is basically a box where you would store your toys and volume is like a hole in the box through which we can take some toys away or put more toys in.
 
 Q: What is your preference concerning the use of Python virtualenv and Docker? When would you use one or the other?
 
@@ -88,6 +88,7 @@ A: Docker build context is a set of files that is located in specified `PATH` or
 ```sh
 docker build [OPTIONS] PATH | URL | -
 ```
++ Atrhur's remark: the build context should not be unnecessarily large, because in that case the building of our image would take a long time (because docker has to load those files).
 
 Q: How can you asses the quality of a python package on PyPI?
 
