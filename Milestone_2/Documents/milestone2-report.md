@@ -90,23 +90,23 @@ docker build [OPTIONS] PATH | URL | -
 ```
 + Atrhur's remark: the build context should not be unnecessarily large, because in that case the building of our image would take a long time (because docker has to load those files).
 
-Q: How can you asses the quality of a python package on PyPI?
+Q: How can you assess the quality of a python package on PyPI?
 
 A: We can check the GitHub statistics, where we see the stars, forks and open issues. Good indicator of quality is the stars statistics - the more stars the package has, the better it is.
 
 ## Splitting The Code 
 Main idea for our code split: one file is only to load all the data and packages.
 
-Second step is to prepare our data : here we do data processing, flatten the data, normalize (we did this at once, because this is the stepped required to develop the model).
+Second step is to prepare our data : here we do data processing, flatten the data, normalize (we did this at once, because this is the step required to develop the model).
 
 Step 3 is just developing the model! Without running it.
 
-Then one module to compile and save, because with big data this can be time consuimg (I Guess).
+Then one module to compile and save, because with big data this can be time consuming (I Guess).
 
 The last part ist to load data, fit the model and evaluate things!
 
 ## Pip Requirements File
-To prepare the pip requirements file, we first setup a virtual environment where we install all packages needed to run the code (I did it based on our documentation file). We then use the pip freeze command to create a text file with the package requirements to run the code, like this:
+To prepare the pip requirements file, we first set up a virtual environment where we install all packages needed to run the code (I did it based on our documentation file). We then use the pip freeze command to create a text file with the package requirements to run the code, like this:
 ```sh
 virtualenv milestone_2
 source milestone_2/bin/activate
@@ -137,7 +137,7 @@ sudo systemctl status docker
 docker container run hello-world
 ## DOES NOT WORK! ERROR: docker: Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post http://%2Fvar%2Frun%2Fdocker.sock/v1.35/containers/create: dial unix /var/run/docker.sock: connect: permission denied.See 'docker run --help'.
 
-#to obe able to run docker as a non-root user, I have to do this:
+#to be able to run docker as a non-root user, I have to do this:
 sudo usermod -aG docker parallels #parallels is my username since I am using parallels to run linux
 newgrp docker
 
