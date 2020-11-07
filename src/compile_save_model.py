@@ -1,10 +1,10 @@
 from developing_the_model import *
 
-model.compile(loss=keras.losses.categorical_crossentropy,
-              optimizer=keras.optimizers.Adadelta(),
-              metrics=['accuracy'])
+def compile():
+    model.compile(loss=keras.losses.categorical_crossentropy,
+                  optimizer=keras.optimizers.Adadelta(),
+                  metrics=['accuracy'])
 
+compile()
 
-model.save('my_model.h5') 
-
-
+model.save("my_model.h5")
