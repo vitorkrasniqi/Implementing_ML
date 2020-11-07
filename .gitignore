@@ -1,6 +1,6 @@
-
-
-Dockerfile
-resources/
-src
+todo.txt
+Data/
+Command_For_Git
+__pycache__ 
+mnist_cnn.py
 
