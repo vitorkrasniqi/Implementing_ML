@@ -1,6 +1,6 @@
 Command_For_Git
-mnist_cnn
-/resources/Old_files
+mnist_cnn.py
+/resources/Old_files/Milestone_1
 /src/__pycache__ 
 
 
