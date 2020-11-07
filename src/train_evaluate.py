@@ -9,7 +9,7 @@ def fit_model(batch_size, epochs):
               verbose=1,
               validation_data=(x_test, y_test))
 
-fit_model(128, 2)
+fit_model(128, 12)
 
 score = model.evaluate(x_test, y_test, verbose=0)
 print('Test loss:', score[0])
