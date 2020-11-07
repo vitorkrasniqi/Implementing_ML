@@ -1,7 +1,5 @@
 Command_For_Git
-resources/Old_files/Data
-resources/Old_files/Data/
-resources/
+* resources/Old_files/Data/
 mnist_cnn.py
 src/__pycache__
 
