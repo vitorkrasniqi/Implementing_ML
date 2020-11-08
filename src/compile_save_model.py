@@ -5,6 +5,5 @@ def compile():
                   optimizer=keras.optimizers.Adadelta(),
                   metrics=['accuracy'])
 
-compile()
-
-model.save("my_model.h5")
+def save_model():
+    model.save("my_model.h5")
