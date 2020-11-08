@@ -25,5 +25,5 @@ import train_evaluate
 from train_evaluate import model_load, fit_model, scoring
 
 model_load()
-fit_model(128, 2) 
+fit_model(128, 12) 
 scoring()
