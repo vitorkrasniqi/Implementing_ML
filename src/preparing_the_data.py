@@ -12,8 +12,6 @@ def format_data_x(img_rows, img_cols):
         x_train = x_train.reshape(x_train.shape[0], img_rows, img_cols, 1)
         x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
         input_shape = (img_rows, img_cols, 1)
-            
-format_data_x(28, 28)
 
 def normalize(num):
     global x_train
@@ -26,13 +24,8 @@ def normalize(num):
     print(x_train.shape[0], 'train samples')
     print(x_test.shape[0], 'test samples')
 
-normalize(255)
-
 def vectorize_y(num_classes):
     global y_train
     global y_test
     y_train = keras.utils.to_categorical(y_train, num_classes)
-    y_test = keras.utils.to_categorical(y_test, num_classes)
-    
-vectorize_y(10)
-
+    y_test = keras.utils.to_categorical(y_test, num_classes)    
