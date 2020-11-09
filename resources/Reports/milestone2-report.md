@@ -117,6 +117,15 @@ pip freeze > requirements.txt
 ```
 Now we have a pip requirements file. I use the command `deactivate` to deactivate the virtual environment and that's it!
 
+### Hashes
+
+I got the hashes for the two required packages by using f.e. `hashin Keras==2.4.3` and it added the hash into a requirements.txt file that I prepared for this task.
+
+Package  |  Hash
+--|--
+Keras==2.4.3   |  hash=sha256:05e2faf6885f7899482a7d18fc00ba9655fe2c9296a35ad96949a07a9c27d1bb
+tensorflow==2.3.1   |  hash=sha256:1f72edee9d2e8861edbb9e082608fd21de7113580b3fdaa4e194b472c2e196d0
+
 ## Dockerize The Code
 To install Docker, we use the following commands:
 ```sh
