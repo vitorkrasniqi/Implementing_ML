@@ -28,7 +28,7 @@ save_model()
 scoring()
 
 import load_model_predict
-from load_model_predict import load_model, predict
+from load_model_predict import model_load, predict
 
-load_model()
+model_load()
 predict()
