@@ -1,8 +1,4 @@
-from compile_save_model import *
-
-def model_load():
-    global model
-    model = load_model("my_model.h5")
+from compile_model import *
 
 def fit_model(batch_size, epochs):
     model.fit(x_train, y_train,
@@ -11,6 +7,9 @@ def fit_model(batch_size, epochs):
               verbose=1,
               validation_data=(x_test, y_test))
 
+def save_model():
+    model.save("my_fitted_model.h5")
+    
 def scoring():
     global score
     score = model.evaluate(x_test, y_test, verbose=0)

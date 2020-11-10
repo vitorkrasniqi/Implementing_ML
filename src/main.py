@@ -15,15 +15,21 @@ from developing_the_model import develop_model
 
 develop_model(10)
 
-import compile_save_model
-from compile_save_model import compile, save_model 
+import compile_model
+from compile_model import compile
 
 compile()
-save_model()
 
-import train_evaluate 
-from train_evaluate import model_load, fit_model, scoring
+import fit_save_score_model 
+from fit_save_score_model import fit_model, save_model, scoring
+
+fit_model(128, 12) 
+save_model()
+scoring()
+
+import load_model_predict
+from load_model_predict import model_load, predict
+from preparing_the_data import x_test
 
 model_load()
-fit_model(128, 12) 
-scoring()
+predict(x_test)
