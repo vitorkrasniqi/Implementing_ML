@@ -31,4 +31,4 @@ import load_model_predict
 from load_model_predict import model_load, predict
 
 model_load()
-predict()
+predict(x_test)
