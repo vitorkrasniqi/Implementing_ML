@@ -120,7 +120,7 @@ A: We can check the GitHub statistics, where we see the stars, forks and open is
 
 ## Code Funcionality
 
-Our assigned code already has a lot of the funcionality, but we had to add two funcionalities. 
+Our assigned code already has a lot of the funcionality, but we had to add three funcionalities. 
 
 We had to load an additional library first:
 ```sh
@@ -130,9 +130,14 @@ With this library it is very easy to save a model as .h5 file and load this mode
 
 Accordingly, we only had to write the following code to adapt the code:
 ```sh
-model.save("my_model.h5")
-model = load_model("my_model.h5")
+model.save("my_fitted_model.h5")
+model = load_model("my_fitted_model.h5")
 ```
+Lastly, we had to implement a prediction functionality, which we did with the following code:
+```sh
+pred = model.predict_classes(x_test, verbose = 1)
+```
+That is all, now our code can do everything required.
 
 ## Splitting The Code 
 Main idea for our code split: one file is only to load all the data and packages.
