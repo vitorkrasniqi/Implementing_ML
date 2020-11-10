@@ -29,6 +29,7 @@ scoring()
 
 import load_model_predict
 from load_model_predict import model_load, predict
+from preparing_the_data import x_test
 
 model_load()
 predict(x_test)
