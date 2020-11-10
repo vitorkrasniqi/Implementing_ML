@@ -1,4 +1,4 @@
-from compile_save_model import *
+from compile_model import *
 
 def fit_model(batch_size, epochs):
     model.fit(x_train, y_train,
