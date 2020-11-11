@@ -104,7 +104,11 @@ Q: What is PostgreSQL? Is it SQL or no-SQL and why?
 Q: If you stpped and deleted the Docker container running the database and restarted it, would your joke still be in the database? Why or why not?
 
 ### Running a PostgreSQL Server
-
+First, we pull the docker image we need using the following command:
+```sh
+docker pull postgres:12.4-alpine
+```
+After this, we can check that the image is present locally by using the `docker images` command. 
 ## Task 3) 
 ### Impedance Mismatch
 
