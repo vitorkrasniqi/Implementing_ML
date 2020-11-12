@@ -103,6 +103,8 @@ Q: What is PostgreSQL? Is it SQL or no-SQL and why?
 
 Q: If you stpped and deleted the Docker container running the database and restarted it, would your joke still be in the database? Why or why not?
 
+A: In our case, the data would persist because they are stored in a volume (defined in the docker-compose file below) and a Docker volume is not deleted when the container is deleted.
+
 ### Running a PostgreSQL Server
 With this task, we had several problems and were not able to run the server while following many guides. We then decided to run both PostgreSQL and PGADMIN with the help of a docker-compose file and that finally worked for us. First, we make a new directory for this project and change into that directory, like so:
 ```sh
