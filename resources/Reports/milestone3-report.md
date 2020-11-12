@@ -104,11 +104,79 @@ Q: What is PostgreSQL? Is it SQL or no-SQL and why?
 Q: If you stpped and deleted the Docker container running the database and restarted it, would your joke still be in the database? Why or why not?
 
 ### Running a PostgreSQL Server
-First, we pull the docker image we need using the following command:
+With this task, we had several problems and were not able to run the server while following many guides. We then decided to run both PostgreSQL and PGADMIN with the help of a docker-compose file and that finally worked for us. First, we make a new directory for this project and change into that directory, like so:
 ```sh
-docker pull postgres:12.4-alpine
+mkdir -p ~/Desktop/docker/pgdev
+cd ~/Desktop/docker/pgdev
 ```
-After this, we can check that the image is present locally by using the `docker images` command. 
+As a next step, we create a new docker-compose file with the command `> docker-compose.yaml`. We put the following into the file:
+```sh
+version: "3.7"
+
+services:
+    db:
+        image: postgres:12.4
+        restart: always
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: secret
+            PGDATA: /var/lib/postgresql/data
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+ 
+    pgadmin:
+        image: dpage/pgadmin4:4.18
+        restart: always
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@linuxhint.com
+            PGADMIN_DEFAULT_PASSWORD: Mivi2020
+            PGADMIN_LISTEN_PORT: 80
+        ports:
+            - "8080:80"
+        volumes:
+            - pgadmin-data:/var/lib/pgadmin
+        links:
+            - "db:pgsql-server"
+volumes:
+    db-data:
+    pgadmin-data:
+```
+With this file, we start the services:
+```sh
+docker-compose up -d
+```
+After the command is executed, we can chceck that everything worked and that the correct ports are exposed with the `docker-compose ps` command. To this, we get the following output: 
+ Name |Command   |State   |Ports  
+--|---|---|--
+pgdev_db_1|docker-entrypoint.sh postgres|Up |0.0.0.0:5432->5432/tcp
+pgdev_pgadmin_1| /entrypoint.sh  |Up |  443/tcp, 0.0.0.0:8080->80/tcp
+
+This means that to run the database, our system is using the port 5432 and 8080 (= host port) to run the PGadmin and the ports are redirected in the container to ports 5432 and 80, respectively.
+
+Now we can already open our browser, paste http://localhost:8080 and see our PGADMIN login page. 
+
+After we login, we select to create a new server. We named the server Database Test and inputed our password. For the Host name/address information, we needed an IP address of the container on which the database is running. We use the command `docker ps -a` and look at the container named pgdev_db_1. From this row, we need the container ID, which we use in the command `docker inspect container_ID`.
+
+At the end of the output, we see the IP address and write it in the Host name/address box. Then we can save and the server is created.
+
+### ms3_jokes database
+So far, we did not manage to create a database called ms3_jokes with a python script, so we decided to do it in PGadmin for now and try to figure it out later.
+
+Creating a database there is really easy, we just click on databases and choose to create a database. We name the database ms3_jokes and the database is created. In schemas of that database, we can see that there are no tables in the database.
+
+To create a table, we open the Query Tool and use the following notation:
+```sh
+CREATE TABLE jokes(ID numeric, joke TEXT)
+```
+After this, we refresh the tables and see that there is, indeed, a new table called jokes with 2 columns: id and joke. Now all we have to do is insert our favorite joke with the following:
+```sh
+INSERT INTO jokes(ID, joke) VALUES ('1', 'I have a joke about a data miner, but you probably will not dig it.')
+```
+After this command is executed, we refresh the table and can view the data, which now holds our joke with ID number 1.
+
 ## Task 3) 
 ### Impedance Mismatch
 
