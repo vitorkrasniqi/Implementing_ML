@@ -88,14 +88,29 @@ web_1    |  * Detected change in '/code/app.py', reloading
 ```
 Now when we reload the page in our browser, we can see the following text: Hello from Docker! I have been seen 7 times.
 
-### Questions
+### Questions for composetest
 Q: Which services are being used for the application (described in the link above)? How do they relate to the host names in terms of computer networks?
+
+A: The services used in the composetest are defined in the docker-compose file. The two services are web and redis. We can see that both of the services are up when we use the command `docker-compose ps`, which gives the following table as an output:
+
+Name  | Command  |State   | Ports 
+--|---|---|--
+composetest_redis_1  | docker-entrypoint.sh redis ...  |Up   | 6379/tcp
+composetest_web_1  |flask run   |Up   | 0.0.0.0:5000->5000/tcp 
 
 Q: What ports are being used (within the application and in the docker-compose file)?
 
+A: As can be also seen in the table above, the ports that are being used are 6379 where we run redis and 5000 used in the docker-compose. 5000 is used on the host machine as well as in the container.
+
 Q: How does the host machine (e.g. your computer) communicate with the application inside the Docker container. Which ports are exposed from the application to the host machine?
 
+A: How our machine communicates with the application is also apparent from the table. We see that the host machine identified by 0.0.0.0. communicates through the port 5000 with the server, which uses also port 5000. 
+
+SIDENOTE: This does not have to be the case. For example, in Task 2, we can see that pgadmin has the following port information: 0.0.0.0:8080->80/tcp, which meand that the host machine is using the port 8080 to communicate and is being redirected in the container to port 80.
+
 Q: What is localhost, why is it useful in the domain of web applications?
+
+A: Localhost refers to the computer/system that is currently used. In the project, we use localhost whenever we have a running web application like PGADMIN. We connect to it through our brower by writing for example: http://localhost:5000/ where 5000 is the port that is being used on the host machine. We can also use 127.0.0.1 instead of localhost.
 
 ## Task 2)
 ### Questions
