@@ -337,7 +337,7 @@ I decided to insert the plot as this for 2 reasons:
 
 2. I don't know how else to put a plot into markdown:)
 
-
+In the second approach, we just converted the images into pickle files and converted them into csv, which we used to load into a database (the .py files are also stored in our repository). 
 
 ### Our Data Set
 Our dataset can be accesed on this [link](http://yann.lecun.com/exdb/mnist/). The data can be downloaded as 4 separate compressed files of the .gz format. Once you decompress the data, images are in a idx3-ubyte format and the labels are in idx1-ubyte. The IDX file format is actually meant for vectors and multidimensional matrices of several numeric types, which worked out great for us in the end, because we could use that directly. Usually we prefer to load the data to python with the mnist.load_data function, which is really straightforward and returns the data in arrays of uint8, images with dimensions (60000 or 10000, 28, 28) and labels as (60000 or 10000, ).
@@ -345,9 +345,6 @@ Our dataset can be accesed on this [link](http://yann.lecun.com/exdb/mnist/). Th
 In a database, it would make sense to define a table for images, where the individual images would be stored with their labels and connect the labels to a prediction table, where it would have a variable of predicted value and actual value as well, so that we could easily compare. The predictions and actual labels would be stored as a numeric value and the image as an array. 
 
 The label value would make it easy to just choose images of a specific value that you want to see.
-
-### Task 2) With Our Data
-
 
 ## Task 4) 
 ### Our docker-compose.yml File
