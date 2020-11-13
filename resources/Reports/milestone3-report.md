@@ -101,6 +101,8 @@ Q: What is localhost, why is it useful in the domain of web applications?
 ### Questions
 Q: What is PostgreSQL? Is it SQL or no-SQL and why?
 
+A: PostgreSQL (also known as Postgres) is a relational database management system. The difference between SQL and no-SQL is that SQL databases are relational, use structured query language and have a predefined schema. NoSQL are non-relational and have dynamic schemas for unstructured data. Postgres is therefore SQL. 
+
 Q: If you stpped and deleted the Docker container running the database and restarted it, would your joke still be in the database? Why or why not?
 
 A: In our case, the data would persist because they are stored in a volume (defined in the docker-compose file below) and a Docker volume is not deleted when the container is deleted.
@@ -133,8 +135,8 @@ services:
         image: dpage/pgadmin4:4.18
         restart: always
         environment:
-            PGADMIN_DEFAULT_EMAIL: admin@linuxhint.com
-            PGADMIN_DEFAULT_PASSWORD: Mivi2020
+            PGADMIN_DEFAULT_EMAIL: welovedatasciencealltheway@tryingtolearnit.though
+            PGADMIN_DEFAULT_PASSWORD: password1234
             PGADMIN_LISTEN_PORT: 80
         ports:
             - "8080:80"
@@ -178,6 +180,116 @@ After this, we refresh the tables and see that there is, indeed, a new table cal
 INSERT INTO jokes(ID, joke) VALUES ('1', 'I have a joke about a data miner, but you probably will not dig it.')
 ```
 After this command is executed, we refresh the table and can view the data, which now holds our joke with ID number 1.
+
+### Python solution
+While solving the second task with a python script, we use the docker-compose file that can be seen above. Over the course of this project, we have learned that with docker-compose files, the structure must be written very precisely and it is important to save this code in the correct format.
+
+When we have this, we start the database by executing the following command in the terminal:
+```sh
+docker-compose up
+```
+We have also written a Python script, where we start by importing the package psycopg2, which is recommended for communication with databases:
+```sh
+import psycopg2
+from psycopg2 import sql
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+```
+Here we could have saved port, because the standard is always 5432.
+```sh
+connection = psycopg2.connect(user = "admin",
+                              password = "secret",
+                              host = "localhost",
+                              port = "5432",
+                              database = "postgres")
+```
+We have created this to bypass SQL injection.
+```sh
+connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+cu = connection.cursor()
+print(connection.get_dsn_parameters(), "\n")
+
+name_Database = "ms3_jokes";
+sqlCreateDatabase = "create database" + name_Database + ";"
+cu.execure(sqlCreateDatabase);
+
+use_data_base = ""
+\connect ms3_jokes
+'''
+show_database = '''
+
+SELECT current_database();
+'''
+create_table_query = '''CREATE TABLE jokes
+    (ID INT PRIMARY KEY NOT NULL,
+    JOKE TEXT NOT NULL); '''
+
+load_data_into_table_query = '''
+    INSERT INTO jokes (ID, joke) VALUES('1', 'I have a joke about a data miner, but you probably will not dig it.');
+    '''
+
+select_data_query = '''
+    Select * from jokes;
+    '''
+cu.execute(use_data_base)
+cu.execute(show_database)
+cu.execute(create_table_query)
+cu.execute(load_data_into_table_query)
+cu.execute(select_data_query)
+
+print("Table created successfully in PostgreSQL")
+
+rows = cu.fetchall()
+for r in rows:
+    print(f"ID {r[0]} joke {r[1]}")
+
+connection.commit()
+connection.close()
+```
+With `connection.commit` we wrote directly in the database and with `connection.close` we close the connection.
+
+After that we logged into the terminal to see if our Python script was successful. So we logged via terminal with the database using the psql client. 
+
+First we had to load the psql language into the terminal by typing the following:
+```sh
+sudo docker-compose run db bash
+```
+IMPORTANT at this point: we have to run db here, because we defined the connection in YALM as db.
+
+Now we could register in the data bank container:
+```sh
+root@93b723a30a4a:/# psql --host=db --username=admin --dbname=postgres
+
+Password for user admin:
+psql (12.4 (Debian 12.4-1.pgdg100+1))
+Type "help" for help.
+```
+Now logged into the created database:
+```sh
+ms3_jokes=#`
+```
+Now we want to list all created databases with the following command:
+```sh
+ms3_jokes=# \l
+```
+List of databases
+ Name |Owner   |Encoding   |Collate   | Ctype  | Access privileges 
+--|---|---|---|---|--
+ms3_jokes | admin  |UTF8   |en_US.utf8   |en_US.utf8   |  
+postgres |admin   |UTF8   |en_US.utf8   | en_US.utf8  |  
+template0 |admin   |UTF8   |en_US.utf8   | en_US.utf8  | =c/admin   admin=CTc/admin 
+template1 |admin   |UTF8   |en_US.utf8   | en_US.utf8  | =c/admin   admin=CTc/admin 
+
+If we want to list all created tables:
+```sh
+ms3_jokes=# \d
+```
+Now we want to check our joke:
+```sh
+ms3_jokes=# select * from jokes;
+```
+ id | joke 
+--|--
+1  | I have a joke about a data miner, but you probably will not dig it. 
 
 ## Task 3) 
 ### Impedance Mismatch
