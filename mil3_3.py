@@ -40,7 +40,7 @@ print(mnist_db.shape) #just because I'm obsessive and want to triple check
 
 sample_db = x_train1[321]
 print(sample_db)
-pyplot.imshow(mnist_train_images[321])
+pyplot.imshow(x_train[321])
 
 db_final = sample_db.tostring()  #we put this in the database
 print(db_final)
