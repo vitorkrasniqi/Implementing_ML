@@ -350,3 +350,21 @@ The label value would make it easy to just choose images of a specific value tha
 ### Our docker-compose.yml File
 
 ### Our Database Structure
+
+
+## Optional Project Riddles
+- What is an SQL Injection Attack?
+    - SQL injection, also known as SQLI, is a common attack vector that uses malicious SQL code for backend database manipulation to access information that was not intended to be displayed. Websites are the most frequent targets of SQL injections. There are three types of SQL injections and they are classified according to the methods they use to access backend data and their damage potential:
+
+        - In-band SQLi (Classic)
+        - Inferential SQLi (Blind)
+        - Out-of-band SQLi.
+        - Data can be deleted, extracted and manipulated. Therefore it can cause huge real-world problems.
+  
+- How can you protect yourself?
+    - Input validation (a.k.a. sanitization): it is a best practice of writing code that can identify illegitimate user inputs.
+    - Web application firewall (WAF): it is commonly employed to filter out SQLI, as well as other online threats
+    - Signature recognition, IP reputation: Whenever a web application firewall encounters a suspicious, but not outright malicious input may cross-verify it with IP data before deciding to block the request. It only blocks the input if the IP itself has a bad reputational history.
+    
+- What is a Decompression Bomb?
+    - A decompression bomb is a malicious file that unpacks to an enormous amount of data - thus "flooding" the unpacking engine. That leads to crashing or rendering useless the program or system reading it. It is often employed to disable antivirus software, in order to create an opening for more traditional viruses. It is also called ‘zip of death’ or a zip bomb.
