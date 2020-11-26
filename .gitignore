@@ -3,3 +3,4 @@ resources/Old_files/
 Command_For_Git
 src/__pycache__/
 *.h5
+*.env
