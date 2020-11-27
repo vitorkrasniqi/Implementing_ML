@@ -3,23 +3,23 @@
 ### Questions
 Q: What is Experiment Management and why is it important?
 
-A: 
+A: Experiment Management is a process of tracking experiment data, like code and data versions, hyperparameters and so on and it is important to keep track of which approaches were used and how they performed, so that we can orient well in our machine learning experiment. 
 
 Q: What is a Metric in ML?
 
-A:
+A: Metric is a summary of a model outcome in the form of one or more numbers. 
 
 Q: What is Precision and Recall? Why is there often a Trade-off between them?
 
-A:
+A: Precision is the true positive rate divided by all data points predicted as positives (including the ones that are not actually positive). It tells us how many of our positive predictions are actually positive. Recall or sensitivity is the true positive rate divided by all data points that are actually positive. This metric tells us how many of the actually positive points we predicted correctly. There is a tradeoff, because if I predicted that all the data points are positive, my recall would be great but my precision would be really bad. 
 
 Q: What is AUROC Metric?
 
-A:
+A: It is a metric that shows us how much/how well the model can distinguish between classes. It uses AUC (=area under the curve) and ROC (= receiver operating characterstics). The higher the ROC curve is, the better is the model at predicting classes. The metric is plotted with FPR (= false positive rate) at x-axis and TPR (= true positive rate) at y-axis.
 
 Q: What is a Confusion Matrix?
 
-A:
+A: Confusion Matrix is a table that visualises the predictions of a model. It consists of True and False Positives and True and False Negatives and by combining these numbers, we can get several metrics: Precision, Negative Predictive Value, Sensitivity, Specificity and Accuracy. 
 
 ## Task 2) 
 All files for this task are included in the wandb folder of our repository.
