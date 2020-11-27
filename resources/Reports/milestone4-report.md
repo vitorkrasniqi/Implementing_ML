@@ -23,6 +23,7 @@ A:
 
 ## Task 2) 
 All files for this task are included in the wandb folder of our repository.
+
 ### Our Code
 
 To instrument our code with weights and biases, we added the following code to our main python script:
@@ -112,3 +113,4 @@ After that, we checked the code with the `docker logs <container_name>` command.
 You can see our runs [here](https://wandb.ai/michaelahavl/our-wandb?workspace=user-michaelahavl). Two of them are marked as failed because the the score was not properly defined, but otherwise it has all the data. 
 
 ## Task 3) 
+The jupyter notebook can be seen in our repository. There are comments for the code as well.
