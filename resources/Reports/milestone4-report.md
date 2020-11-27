@@ -1,4 +1,7 @@
 # Milestone 4: Report
+## Task 0)
+Unfortunately, as some of the other groups, we were not able to finish the missing parts of our milestone 3 due to complexity and time constraints. 
+
 ## Task 1)
 ### Questions
 Q: What is Experiment Management and why is it important?
