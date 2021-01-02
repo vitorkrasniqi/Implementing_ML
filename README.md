@@ -5,7 +5,6 @@ Data science is on everyone's lips and is highly regarded. The training and lear
 In contrast, this module is about properly implementing and putting into production a machine learning/deep learning algorithm using software tools. The understanding of data-driven software and typical life cycle of machine learning projects is promoted in this project, in which this project was developed in five different milestones. 
 
 
-
 ## Milestone 1 
 
 In this milestone, we first had to create a Git repository so that we can work together as a team, because we have already received data and code for this project.The dataset assigned to our group (accessible [here](http://yann.lecun.com/exdb/mnist/)) is the MNIST database, which is a subset of a larger database MNIST that consists of Special Database 3 (SD-3) and Special Database 1 (SD-1).
@@ -25,4 +24,16 @@ The structure of the code was not sufficient for us, so we divided the code into
 
 Later, in a virtual environment, we downloaded all the packages needed to run the code so that we could agree as a team on the right packages and versions. At the same time we created a requirements file so that we could quickly download the required packages in other environments (virtual env or local).
 
-Finally, we took the first step towards Docker by installing Docker and creating a simple Dockerfile based on Python 3.8.3 that runs our script and downloads the required packages from our defined requirements file. Using Docker-build we then created our first images and then got our Docker running and could see our code running
+Finally, we took the first step towards Docker by installing Docker and creating a simple Dockerfile based on Python 3.8.3 that runs our script and downloads the required packages from our defined requirements file. Using Docker-build we then created our first images and then got our Docker running and could see our code running.
+
+
+## Milestone 3
+
+This step is about working with relational databases so that we can store the input and output of our neural network. However, the transfer is to be done with the help of Docker, where we can access the database with the help of the host IP address and the defined port. 
+
+Thus, at the beginning we have dealt with PostgreSQL and Docker Compose (We already know that in this project we will create several Dockerfiles and need Docker Compose , since we also want to start several containers in the same time and connect them with the help of a network. ), since we have as a goal to create a multi-container Docker software.
+
+We got into this by first creating a database and database users using a docker-compose file.  Then later we created a table using Python and stored a bad joke there. 
+
+In a further step, we stored the input and output data of our deep learning model into a relational database by working with PostgreSQL and Docker Compose. For this we used libraries like pandas, sqlalchemy and psycopg2. 
+

@@ -347,12 +347,185 @@ In a database, it would make sense to define a table for images, where the indiv
 The label value would make it easy to just choose images of a specific value that you want to see.
 
 ## Task 4) 
-### Our docker-compose.yml File
 
-Unfortunately, while finishing up the task, Vitor has some error and is unable to push files onto github and if I pull them, I don't see them as well of course. 
-I myself have a different problem today, which is that I am not able to run any web application that worked f.e. 2 days ago and my docker containers act like everything is okay.
+### Prerequisite
+A folder was created for this task, which is named m3_ex4. All relevant scripts were stored there.We had a lot of trouble with this task and got a bit lost in the tutorial jungle. Thus, we wanted to build clarity first and delete all Docker images and containers and start from scratch. We now delete all files and run only the Dockers that we really need. This task was created by us additionally and can also serve as a kind of repetition of what we have learned. Thus, we took the following steps and briefly described them:  
 
-23:49 we are still trying to solve it.
+1. Deleting all Docker files
+   ```
+    vitor@krasniqi:~/Documents/Python/Implementing_ML$ sudo docker system prune -a --volumes
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all volumes not used by at least one container
+  - all images without at least one container associated to them
+  - all build cache
+
+Are you sure you want to continue? [y/N] y
+
+
+Total reclaimed space: 22.67GB
+
+    ```
+2. With the following command I can see if and which images still exist: 
+
+    ```
+    sudo docker images -a
+
+
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+postgres            12.4                492fb9ae4e7a        2 months ago        314MB
+dpage/pgadmin4      4.18                75a7457ee03b        10 months ago 
+    ```
+
+
+
+
+
+
+
+This is exactly the same as the images we created using Docker compose. As proof, we have executed the following command: 
+
+    ```
+(base) vitor@krasniqi:~/Documents/Python/Implementing_ML$ sudo docker-compose images
+        Container             Repository     Tag      Image Id       Size  
+---------------------------------------------------------------------------
+implementing_ml_db_1        postgres         12.4   492fb9ae4e7a   313.9 MB
+implementing_ml_pgadmin_1   dpage/pgadmin4   4.18   75a7457ee03b   279.6 MB
+    ```
+
+
+3. Stopping and removing the created Containers:
+```
+(base) vitor@krasniqi:~/Documents/Python/Implementing_ML$ sudo docker stop implementing_ml_db_1 
+
+(base) vitor@krasniqi:~/Documents/Python/Implementing_ML$ sudo docker stop implementing_ml_pgadmin_1 
+(base) vitor@krasniqi:~/Documents/Python/Implementing_ML$ sudo docker-compose rm
+
+sudo docker container ls -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+
+```
+
+
+### Python script for saving data in the database
+
+We have created a file with the name m3_ex4_store_data.py. In this file, a database connection is first made in two different ways, once with sqlalchemy and once with psycop2.
+
+The reason for this is that with psycop2 it is easier to create queries and with sqlalchemy pandas can be loaded faster.
+Besides, this was very interesting for us because we also want to learn how to create open-source ETL pipelines with Python.
+
+In the second step, we then loaded the data and transformed it in the appropriate format. In short, we made a sample, created an ID column and renamed the column names. 
+
+A great learning was working with Pandas, as we can use Pandas well for other projects!
+
+```
+
+
+x_train_df = x_train[0:5]
+x_train_df =  x_train_df.astype(np.int64)
+x_train_df =  x_train_df.astype(np.str)
+x_train_df = x_train_df.tolist()
+x_train_df = pd.DataFrame(x_train_df ) 
+x_train_df.columns = [ 'x_train_0', 'x_train_1', 'x_train_2', 'x_train_3', 'x_train_4', 'x_train_5', 'x_train_6', 'x_train_7', 'x_train_8', 'x_train_9', 'x_train_10', 'x_train_11', 'x_train_12', 'x_train_13', 'x_train_14', 'x_train_15', 'x_train_16', 'x_train_17', 'x_train_18', 'x_train_19', 'x_train_20', 'x_train_21', 'x_train_22', 'x_train_23', 'x_train_24', 'x_train_25', 'x_train_26', 'x_train_27']
+x_train_df['ID_'] = x_train_df.index
+
+```
+
+
+
+### Our Docker-File
+
+We have created a simple Docker file which executes the created script. In doing so, we built on our knowledge at Milestone 2. We installed the required libraries again with a requirements file. There were however also exceptions, which we installed with RUN PIP Install, since this was reflected in the Requirmentsfile as a folder structure and not version.
+```
+
+FROM python:3.8.3
+
+WORKDIR  /home/vitor/multi_docker_compose
+
+
+
+
+
+COPY . /home/vitor/multi_docker_compose
+
+RUN pip install -r requirements.txt
+
+
+RUN pip install sqlalchemy
+
+RUN pip install matplotlib
+
+RUN pip install pandas
+
+
+# SETUP DB ENVIROMENT VARIABLES
+ENV DB_DRIVER='postgres'
+ENV DB_HOST='db'
+ENV DB_PORT='5432'
+ENV DB_USERNAME='admin'
+ENV DB_PASSWORD='password1234'
+ENV DB_DBNAME='milestone_3'
+
+EXPOSE 5000
+
+
+
+CMD   python  m3_ex4_store_data.py
+
+```
+
+
+
+
+
+
+### Our Docker-Compose File
+
+In principle, it is almost the same file as in the second task. However, we have added our Python Docker file here and made it dependent on the database. This script is now started when the Docker compose runs. 
+
+```
+version: "3.7"
+
+services:
+    db:
+        image: postgres:12.4
+        restart: always
+        environment:
+            POSTGRES_DB: milestone_3
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: password1234
+            PGDATA: /var/lib/postgresql/data
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+ 
+    pgadmin:
+        image: dpage/pgadmin4:4.18
+        restart: always
+        environment:
+            PGADMIN_DEFAULT_EMAIL: welovedatasciencealltheway@tryingtolearnit.though
+            PGADMIN_DEFAULT_PASSWORD: password1234
+            PGADMIN_LISTEN_PORT: 80
+        ports:
+            - "8081:80"
+        volumes:
+            - pgadmin-data:/var/lib/pgadmin
+        links:
+            - "db:pgsql-server"
+    python: 
+        build: .
+        depends_on:
+            - db
+        ports:
+            - "5000:5000"               
+volumes:
+    db-data:
+    pgadmin-data:
+```
+
 
 ### Our Database Structure
 
