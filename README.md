@@ -37,3 +37,10 @@ We got into this by first creating a database and database users using a docker-
 
 In a further step, we stored the input and output data of our deep learning model into a relational database by working with PostgreSQL and Docker Compose. For this we used libraries like pandas, sqlalchemy and psycopg2. 
 
+## Milestone 4
+
+In the fourth milestone, we had to instrument our code with Weights and Biases so that we could see how selected metrics behave when we change some parameters in our code. We began by changing our code base - we had to specify the wandb project in our main script, import wandb into individual snippets of the code and implement wandb into our compile and fit_model functions.
+
+We checked that the code does what we need it to do in Spyder and once everything was correct there, we moved on to running it in a container. For this, we created a dockerfile and an entrypoint script and ran them together using the docker build command. Once we were done, we ran our code a few times to see the different runs on Weights and Biases (can be seen [here](https://wandb.ai/michaelahavl/our-wandb?workspace=user-michaelahavl)). Due to the demanding computation, we only tested different values of batch size and epochs.
+
+For the last task, we prepared a Jupyter Notebook and looked at our dataset more thoroughly and this time from a practical point of view, unlike the more theoretical overview we prepared in the first milestone.
