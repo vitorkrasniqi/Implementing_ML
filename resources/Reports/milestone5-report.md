@@ -46,3 +46,82 @@ Once we run the app, we would get new inputs from customers and return predictio
 We would focus on recall, as it tells us how many of spam emails the model correctly classifies. We expect that most of the inputs would be spam, because people would most probably only check emails they find suspicious. Therefore it would be useful to know how many of the spam emails the model classifies correctly.
 
 ## Task 2)
+### Solution 1 - Incomplete
+
+In task 2, we have two different approaches. The first one is not finished due to a problem we were not able to solve. The files for this can be seen in a separate folder m5_2 in our src folder. The repository will be messy after this milestone, but we will clean it up for the final deliverable. 
+
+The first file we made was the app.py file where we write the flask app. The file looks like this:
+
+```sh
+from flask import Flask, request, jsonify
+import numpy as np
+from tensorflow import keras
+
+app = Flask(__name__)
+
+id2class = {0: "0",
+            1: "1",
+            2: "2",
+            3: "3",
+            4: "4",
+            5: "5",
+            6: "6",
+            7: "7",
+            8: "8",
+            9: "9",}
+           
+model = keras.models.load_model("my_fitted_model.h5")
+@app.route('/predict', methods=['POST'])
+
+def predict():
+    parameters = request.get_json(force=True)
+    im = np.array(parameters['image'])
+    im = im.astype("float32")/255
+    im = np.expand_dims(im, -1)[None]
+    out = id2class[np.argmax(model.predict(im))]
+    return out
+    
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
+```
+I had several problems with this file, which was my own fault, because I had a typo or a missing bracket a few times. We use the host = '0.0.0.0' because the app runs in docker. 
+
+Next up, we have the dockerfile to make our first (and unfortunately last) container. The dockerfile has the follwoing contents:
+```sh
+FROM ubuntu:20.04
+
+RUN apt update -y
+RUN apt install -y python3-pip
+
+COPY . /app
+
+WORKDIR /app
+
+RUN pip3 install -r requirements.txt
+
+ENTRYPOINT ["python3"]
+
+CMD ["app.py"]
+
+```
+Lastly, we prepared a python script that uses the requests library. It looks like this:
+```sh
+import requests
+import json
+
+from keras.datasets import mnist
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+idx = 321
+im = x_test[idx].tolist()
+data = {'image': im}
+URL ='http://127.0.0.1:5000/predict'
+
+result = requests.post(URL, json.dumps(data))
+print(f"Prediction = {result.text}")
+```
+The last file in the folder is the requirements file. 
+
+With these files, we used the `docker build -t test .` command to build our docker image. Then we looked at the image using `docker images` and copied the image id, so that we could run the container. We ran it with the command `docker run -d -p 5000:5000 <image_id>`. After crashing 12 times because of some minor mistakes in the code, we got the container running. Finally, we ran the request script using `python3 req.py`. We are using the test data point with index 321 and in the terminal, we get a prediction of 7 (that is not correct, but I don't blame the model, the 2 in the image is weirdly written). 
+
+However, when I input http://127.0.0.1:5000/predict in my browser, it says that the method is not allowed and for http://127.0.0.1:5000 it says that the requested url was not found on the server. I was not sure how to solve this problem so I did not proceed with this solution further.
