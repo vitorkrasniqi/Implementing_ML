@@ -125,3 +125,81 @@ The last file in the folder is the requirements file.
 With these files, we used the `docker build -t test .` command to build our docker image. Then we looked at the image using `docker images` and copied the image id, so that we could run the container. We ran it with the command `docker run -d -p 5000:5000 <image_id>`. After crashing 12 times because of some minor mistakes in the code, we got the container running. Finally, we ran the request script using `python3 req.py`. We are using the test data point with index 321 and in the terminal, we get a prediction of 7 (that is not correct, but I don't blame the model, the 2 in the image is weirdly written). 
 
 However, when I input http://127.0.0.1:5000/predict in my browser, it says that the method is not allowed and for http://127.0.0.1:5000 it says that the requested url was not found on the server. I was not sure how to solve this problem so I did not proceed with this solution further.
+
+### Solution 2
+The second solution can be seen in a separate folder as well, specifically in the milestone5 folder in src. We also have an app.py script, which looks like this:
+```sh
+from flask import Flask, render_template, request, make_response
+from functools import wraps, update_wrapper
+from PIL import Image
+from predictor import Predictor
+
+import numpy as np
+import torch
+
+# Initialize the predictor object.
+predictor = Predictor()
+
+# Initialize Flask app.
+app = Flask(__name__)
+
+# Base endpoint to perform prediction.
+@app.route('/', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        prediction = predictor.predict(request)
+        return render_template('index.html', prediction=prediction)
+    else:
+        return render_template('index.html', prediction=None)
+		
+if __name__ == '__main__':
+   app.run()
+```
+We use the render_template function to display a web page we have prepared in advance, usually dynamic. Here, by “dynamic,” we mean a page that we can send variables to via parameters sent through the render_template function. These dynamic pages are called templates and can even incorporate Python scripting in between chunks of HTML and even Javascript. Do not confuse render_template with a similar function, redirect, which sends the user to a different sub application.
+
+As you can see, we reference index.html in this script. We used that to create a web page in advance so it would look more professional. The html file containt the following: 
+```sh
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- STYLESHEET -->
+      <link rel="stylesheet" type="text/css" href="./static/css/main.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <!-- JAVSCRIPT -->
+      <script src="./static/js/main.js"></script>
+   </head>
+   <body>
+      <div class="content">
+         <h1 class="title"> Data Science Toolkits and Architectures: Implementing MNIST </h1>
+         <form id="form" action = "http://localhost:5000/" method = "POST" 
+               enctype = "multipart/form-data">
+         <div class="image-box center">
+            {% if prediction == None %}
+            <!-- Show upload buttons if there is no prediction results yet. -->
+               <img id="upload-img" class="center" 
+                    src="./static/img/upload.png" width="100">
+               <label for="file-upload" class="center custom-button">
+                  <i class="fa fa-upload"></i> upload your image
+                  <input type="file" id="file-upload" name="image" onchange=submit() />
+               </label> 
+            {% else %}
+            <!-- Show prediction results. -->
+               <p class="result"> Clearly and without ifs and buts, the image corresponds to the number <b>{{ prediction }}</b> </p>
+            {% endif %}
+         </div>
+            {% if prediction != None %}
+            <!-- Show upload button for follow up predictions. -->
+               <label for="file-upload" class="center custom-button">
+                  <i class="fa fa-upload"></i> upload another image
+                  <input type="file" id="file-upload" name="image" onchange=submit() />
+               </label>
+            {% endif %}
+         </form>  
+      </div>
+   </body>
+</html>
+```
+
+
