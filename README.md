@@ -44,3 +44,7 @@ In the fourth milestone, we had to instrument our code with Weights and Biases s
 We checked that the code does what we need it to do in Spyder and once everything was correct there, we moved on to running it in a container. For this, we created a dockerfile and an entrypoint script and ran them together using the docker build command. Once we were done, we ran our code a few times to see the different runs on Weights and Biases (can be seen [here](https://wandb.ai/michaelahavl/our-wandb?workspace=user-michaelahavl)). Due to the demanding computation, we only tested different values of batch size and epochs.
 
 For the last task, we prepared a Jupyter Notebook and looked at our dataset more thoroughly and this time from a practical point of view, unlike the more theoretical overview we prepared in the first milestone.
+
+## Milestone 5
+
+In the fifth and last milestone, we put everything we learned together - we make a web application that accepts a POST request with a sample data point and returns the prediction to customers and saves the prediction to a database. We make this happen by utilizing Docker, Flask, PostgreSQL and implementing them with our model for classifying handwritten digits.
