@@ -128,32 +128,68 @@ However, when I input http://127.0.0.1:5000/predict in my browser, it says that 
 
 ### Solution 2
 The second solution can be seen in a separate folder as well, specifically in the milestone5 folder in src. We also have an app.py script, which looks like this:
+
+In this solution, the deep-learning algorithm was implemented with the help of the Flask tools. So now you have a website (with the help of inxex.html, connected with Javascrip and CSS) where you can load images and the algorithm predicts this. 
+The connection to the database was provided with SQLalchemy, as this library also has extra functions for working with FLask. 
+
+
 ```sh
 from flask import Flask, render_template, request, make_response
 from functools import wraps, update_wrapper
 from PIL import Image
 from predictor import Predictor
+from flask_sqlalchemy import SQLAlchemy
 
 import numpy as np
 import torch
+
+
 
 # Initialize the predictor object.
 predictor = Predictor()
 
 # Initialize Flask app.
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://admin:password1234@localhost:5432/milestone_3"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+class output(db.Model):
+    __tablename__ = 'output'
+ 
+    id = db.Column(db.Integer, primary_key = True)
+    output = db.Column(db.Integer())
+ 
+    def __init__(self,output ):
+        self.output  = output 
+      
+ 
+    def __repr__(self):
+        return f"{self.output }"
+
+
 
 # Base endpoint to perform prediction.
 @app.route('/', methods=['GET', 'POST'])
+
+
+
+
+
+
 def upload():
     if request.method == 'POST':
         prediction = predictor.predict(request)
         return render_template('index.html', prediction=prediction)
+
     else:
         return render_template('index.html', prediction=None)
-		
+
+	
 if __name__ == '__main__':
    app.run()
+
+
 ```
 We use the render_template function to display a web page we have prepared in advance, usually dynamic. Here, by “dynamic,” we mean a page that we can send variables to via parameters sent through the render_template function. These dynamic pages are called templates and can even incorporate Python scripting in between chunks of HTML and even Javascript. Do not confuse render_template with a similar function, redirect, which sends the user to a different sub application.
 
