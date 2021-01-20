@@ -126,6 +126,55 @@ With these files, we used the `docker build -t test .` command to build our dock
 
 However, when I input http://127.0.0.1:5000/predict in my browser, it says that the method is not allowed and for http://127.0.0.1:5000 it says that the requested url was not found on the server. I was not sure how to solve this problem so I did not proceed with this solution further.
 
+UPDATE: Even though I was not able to finish the task in whole, I wanted to at least have all the subtasks done, including storing the prediction in a database. I made a postgres docker container, connected to it and created a database called mnist, where I created a single table called predictions with columns id and prediction. I inserted a test example directly from the terminal and made sure everything was working. After this, I created a db.py file where I use psycopg2 to create a connection to the database, store the result of the prediction and the id and load them into the predictions table. The script successfully loaded the data in the database.
+
+Postgres in a docker container:
+- I already had a docker image of postgres from previous milestone, so I just ran the docker container with the following command: `docker run -d --name post_5 -e POSTGRES_PASSWORD=MH2021 -v /home/parallels/Desktop/postgres5/:/var/lib/postgresql/data -p 5432:5432 postgres:12.4`
+- I checked that the container is running using `docker ps`
+- then I used the folowing commands to "get" into postgres, create a database, create the table there and add an example entry into the table:
+```sh
+docker exec -it post_5 sh
+# createdb -U postgres mnist
+# psql -U postgres mnist
+mnist=# CREATE TABLE predictions (id int, prediction int);
+CREATE TABLE
+mnist=# INSERT INTO predictions VALUES (2, 4);
+INSERT 0 1
+mnist=# SELECT * FROM predictions;
+id  | prediction
+----+------------
+ 2  |         4
+```
+When the database was ready, I wrote a python script called db.py, where I import the request script, store values and load them into the database. The sctipt looks as follows:
+```sh
+from req import idx, result
+import psycopg2
+from psycopg2 import sql
+
+index = idx
+pred = result.text
+print(index, pred)
+
+connection = psycopg2.connect(host="localhost",
+                              database="mnist",
+                              user="postgres",
+                              password="MH2021",
+                              port="5432")
+    
+cursor = connection.cursor()
+
+
+sql = '''INSERT INTO predictions (id, prediction) VALUES (%s, %s);'''
+cursor.execute(sql, (index, pred))
+
+connection.commit()
+cursor.close()
+connection.close()
+```
+After running the script, I checked the predictions table again and there was the new entry: id 321 and prediction 7. 
+
+This is as far as I got. I still couldn't figure out how to display the prediction in a web application, but maybe I'll get there over the semester break.
+
 ### Solution 2
 The second solution can be seen in a separate folder as well, specifically in the milestone5 folder in src. We also have an app.py script, which looks like this:
 
