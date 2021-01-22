@@ -45,6 +45,7 @@ def upload():
     if request.method == 'POST':
         prediction = predictor.predict(request)
         return render_template('index.html', prediction=prediction)
+
     else:
         return render_template('index.html', prediction=None)
 

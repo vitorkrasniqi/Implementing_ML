@@ -14,7 +14,11 @@ id2class = {0: "0",
             7: "7",
             8: "8",
             9: "9",}
-           
+
+
+
+
+
 model = keras.models.load_model("my_fitted_model.h5")
 @app.route('/predict', methods=['POST'])
 
